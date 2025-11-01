@@ -10,7 +10,7 @@ function App() {
       .then(res => res.text())
       .then(data => setMessage(data))
       .catch(err => console.error(err));
-  }, []);
+  }, [apiUrl]);
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
