@@ -1,85 +1,107 @@
-# Figma Make Local Runner
+# Веб-приложение — Каталог товаров
 
-A skeleton project designed to run code downloaded from Figma Make locally, so you can easily modify the generated code with your favorite tools.
+## Обзор
 
-> Figma now allows you to download an entire runnable project directly.  
-> You may try this project if you encounter issues running the project downloaded from Figma Make
+Данное приложение — это **веб-каталог товаров**, разработанный с использованием **React**, **TypeScript** и **Vite**.  
+Приложение позволяет пользователям просматривать товары, выполнять поиск, применять фильтры и сортировку, управлять избранным, сравнивать товары и оформлять заказы.
 
-This project also includes a `build:single` command to generate a single HTML file containing your entire app.  
-This is useful if you want to share your app as a standalone file.
+Веб-версия приложения взаимодействует с REST API и также используется в мобильном приложении через Capacitor.
 
-## ⚡ How It Works
+---
 
-1. **Pre-installed Packages**  
-   This project comes with many packages that Figma Make-generated code may require (see `package.json`). If you encounter errors about missing dependencies, simply install the required packages using `npm install <package-name>`.
+## Используемые технологии
 
-2. **Automatic Removal of Version Specifiers in Imports**  
-   Figma Make sometimes generates import statements with explicit version specifiers, for example:
+- **React 18**
+- **TypeScript**
+- **Vite**
+- **Tailwind CSS**
+- **shadcn/ui**
+- **Lucide Icons**
+- **REST API**
+- **JWT-аутентификация**
 
-   ```js
-   import { Slot } from "@radix-ui/react-slot@1.1.2";
-   ```
+---
 
-   This can cause version conflicts or issues with local development.  
-   **Solution:**  
-   This project uses a custom Vite plugin that automatically removes version specifiers from import statements during build and development.  
-   The above import will be transformed to:
+##  Функциональные возможности
 
-   ```js
-   import { Slot } from "@radix-ui/react-slot";
-   ```
+###  Аутентификация
+- Вход в систему
+- Регистрация пользователя
+- Аутентификация на основе JWT
+- Обработка истечения сессии
 
-   This ensures compatibility with the dependencies installed in your project.
+###  Каталог товаров
+- Просмотр списка товаров
+- Навигация по категориям
+- Пагинация
+- Страница детальной информации о товаре
 
-   > If you still see errors about missing packages, install them manually as needed.
+###  Поиск и сортировка
+- Поиск товаров по названию
+- Сортировка:
+  - по цене (по возрастанию / убыванию)
+  - по рейтингу
+  - по названию
 
-3. **Resolve `figma:asset/` Imports**  
-   Figma Make may generate imports like:
+###  Фильтрация
+- Диапазон цен (от 0 до 1 000 000)
+- Фильтр по брендам
+- Минимальный рейтинг
+- Только товары в наличии
+- Сброс фильтров
+- Кнопка «Применить» (удобно для мобильных устройств)
 
-   ```js
-   import logo from "figma:asset/logo.svg";
-   ```
+###  Избранное
+- Добавление и удаление товаров из избранного
+- Счётчик избранных товаров в шапке сайта
 
-   This project includes a custom Vite plugin that automatically resolves these imports to files in your local `src/assets` directory.
+###  Сравнение товаров
+- Добавление товаров в список сравнения
+- Сравнение выбранных товаров
 
-## 📋 Prerequisites
+###  Корзина и заказы
+- Добавление товаров в корзину
+- Изменение количества товаров
+- Удаление товаров из корзины
+- Создание и оплата заказов
 
-Before you begin, ensure you have the following installed:
+---
 
-- [Node.js](https://nodejs.org/) (version 18 or higher)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
+##  Валидация и тестирование (Frontend)
 
-## 🛠️ Installation & Setup
+### Обязательные поля
+- Все обязательные поля отмечены символом `*`
+- Отправка формы невозможна при незаполненных обязательных полях
 
-### 1. Clone the Repository
+### Валидация ввода
+- Проверка минимальной и максимальной длины
+- Числовые поля принимают только положительные значения
+- Запрещён ввод недопустимых символов
+- Клиентская валидация до отправки данных на сервер
 
-```bash
-git clone https://github.com/likang/figma-make-local-runner
-cd figma-make-local-runner
-```
+### Обработка ошибок
+- Ошибки API отображаются в виде понятных сообщений
+- Корректная обработка истёкшей сессии
+- Отсутствие ошибок при незаполненных необязательных полях
 
-### 2. Download Code from Figma Make
+---
 
-1. Export your code from Figma Make
-2. Decompress the downloaded files
-3. Copy the `src` folder into the root of this project, replacing the existing `src` folder.
+##  Структура проекта
 
-**Important**: Make sure to replace or merge with the existing files in the `src` folder. The current `src` folder contains a demo application that you should replace with your Figma Make code.
-
-### 3. Install Dependencies
-
-```bash
-npm install
-```
-
-### 4. Start Development Server
-
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:5173` (or another port if 5173 is occupied).
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+```text
+src/
+├── components/
+│   ├── CatalogPage.tsx
+│   ├── FilterSidebar.tsx
+│   ├── ProductCard.tsx
+│   └── Header.tsx
+├── contexts/
+│   └── AuthContext.tsx
+├── services/
+│   └── api.ts
+├── types/
+│   └── api.ts
+├── pages/
+│   ├── AuthPage.tsx
+│   └── ProductPage.tsx
+└── main.tsx
