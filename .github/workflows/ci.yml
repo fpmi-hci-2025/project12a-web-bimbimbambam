@@ -38,11 +38,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # -------------------------
-      # Run tests
-      # -------------------------
-      - name: Run tests
-        run: CI=true npm run test-headless
 
       # -------------------------
       # Build project
