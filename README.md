@@ -1,70 +1,85 @@
-# Getting Started with Create React App
+# Figma Make Local Runner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A skeleton project designed to run code downloaded from Figma Make locally, so you can easily modify the generated code with your favorite tools.
 
-## Available Scripts
+> Figma now allows you to download an entire runnable project directly.  
+> You may try this project if you encounter issues running the project downloaded from Figma Make
 
-In the project directory, you can run:
+This project also includes a `build:single` command to generate a single HTML file containing your entire app.  
+This is useful if you want to share your app as a standalone file.
 
-### `npm start`
+## ⚡ How It Works
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Pre-installed Packages**  
+   This project comes with many packages that Figma Make-generated code may require (see `package.json`). If you encounter errors about missing dependencies, simply install the required packages using `npm install <package-name>`.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. **Automatic Removal of Version Specifiers in Imports**  
+   Figma Make sometimes generates import statements with explicit version specifiers, for example:
 
-### `npm test`
+   ```js
+   import { Slot } from "@radix-ui/react-slot@1.1.2";
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   This can cause version conflicts or issues with local development.  
+   **Solution:**  
+   This project uses a custom Vite plugin that automatically removes version specifiers from import statements during build and development.  
+   The above import will be transformed to:
 
-### `npm run build`
+   ```js
+   import { Slot } from "@radix-ui/react-slot";
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   This ensures compatibility with the dependencies installed in your project.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   > If you still see errors about missing packages, install them manually as needed.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. **Resolve `figma:asset/` Imports**  
+   Figma Make may generate imports like:
 
-### `npm run eject`
+   ```js
+   import logo from "figma:asset/logo.svg";
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   This project includes a custom Vite plugin that automatically resolves these imports to files in your local `src/assets` directory.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📋 Prerequisites
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Before you begin, ensure you have the following installed:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- [Node.js](https://nodejs.org/) (version 18 or higher)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
 
-## Learn More
+## 🛠️ Installation & Setup
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 1. Clone the Repository
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+git clone https://github.com/likang/figma-make-local-runner
+cd figma-make-local-runner
+```
 
-### Code Splitting
+### 2. Download Code from Figma Make
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Export your code from Figma Make
+2. Decompress the downloaded files
+3. Copy the `src` folder into the root of this project, replacing the existing `src` folder.
 
-### Analyzing the Bundle Size
+**Important**: Make sure to replace or merge with the existing files in the `src` folder. The current `src` folder contains a demo application that you should replace with your Figma Make code.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 3. Install Dependencies
 
-### Making a Progressive Web App
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### 4. Start Development Server
 
-### Advanced Configuration
+```bash
+npm run dev
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The application will be available at `http://localhost:5173` (or another port if 5173 is occupied).
 
-### Deployment
+## 📄 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License - see the LICENSE file for details.
