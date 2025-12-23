@@ -1,47 +1,59 @@
-name: Frontend CI
+name: CI
 
 on:
   push:
     branches:
       - main
-      - development
+      - master
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches:
+      - main
+      - master
 
 jobs:
-  build-test-analyze:
+  build-test-sonar:
     runs-on: ubuntu-latest
-    name: Build, Test and Analyze
 
     steps:
+      # -------------------------
+      # Checkout code
+      # -------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for better Sonar analysis
+          fetch-depth: 0
 
-      - name: Set up Node.js
+      # -------------------------
+      # Setup Node.js
+      # -------------------------
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
+          cache: npm
 
-      - name: Cache npm
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
+      # -------------------------
+      # Install dependencies
+      # -------------------------
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests (with coverage)
-        run: npm test -- --coverage
+      # -------------------------
+      # Run tests
+      # -------------------------
+      - name: Run tests
+        run: npm run test
 
-      - name: Build React app
+      # -------------------------
+      # Build project
+      # -------------------------
+      - name: Build project
         run: npm run build
 
+      # -------------------------
+      # SonarCloud analysis
+      # -------------------------
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
