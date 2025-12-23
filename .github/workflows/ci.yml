@@ -42,7 +42,7 @@ jobs:
       # Run tests
       # -------------------------
       - name: Run tests
-        run: CI=true npm run test
+        run: CI=true npm run test-headless
 
       # -------------------------
       # Build project
